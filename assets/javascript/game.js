@@ -47,11 +47,11 @@ class TriviaGame{
 	}
 }
 
-var question1 = new TriviaQuestion("A",["1","2","3","4"], "1");
-var question2 = new TriviaQuestion("B",["1","2","3","4"], "2");
-var question3 = new TriviaQuestion("C",["1","2","3","4"], "3");
-var question4 = new TriviaQuestion("D",["1","2","3","4"], "4");
-var question5 = new TriviaQuestion("E",["1","2","3","4"], "1");
+var question1 = new TriviaQuestion('Name the "other" Stark child: Robb, Brandon, Sansa, Arya, Jon Snow and ...?',["Rickon","Dickon","Theon","Eddard"], "Rickon");
+var question2 = new TriviaQuestion("What is the name of Jon Snow's Direwolf?",["Grey Wind","Graham","Ghost","Garhamel"], "Ghost");
+var question3 = new TriviaQuestion("Which one of these is not a Great House? House...",["Targaryen","Stark","Uzumaki","Forrester"], "Uzumaki");
+var question4 = new TriviaQuestion("Before departing to Braavos, Arya was given a coin and a phrase. What was the phrase?",["Dracarys","Valar Morghulis","Shekh Ma Shieraki Anni","Valar Dohaeris"], "Valar Morghulis");
+var question5 = new TriviaQuestion('Who said "I drink and I know things"?',["Tyrion","Cersei","Robert","Bronn"], "Tyrion");
 
 var triviaGOT = new TriviaGame([question1,question2,question3,question4,question5]);
 
@@ -64,6 +64,19 @@ var updateTime = function(){
 	timeLeft--;
 	$("#time").html(timeLeft)
 }
+
+var checkEnd =function(){
+		if (triviaGOT.remainingQuestions.length >= 1){
+			$("#answer1").css("display","block");
+			$("#answer2").css("display","block");
+			$("#answer3").css("display","block");
+			$("#answer4").css("display","block");
+			insertContent();
+		}else{
+			displayResults();
+		}
+}
+
 
 var timeUp = function(){
 	clearInterval(displayTime);
@@ -79,17 +92,11 @@ var timeUp = function(){
 	$("#answer3").css("display","none");
 	$("#answer4").css("display","none");
 	setTimeout(function(){
-		$("#answer1").css("display","block");
-		$("#answer2").css("display","block");
-		$("#answer3").css("display","block");
-		$("#answer4").css("display","block");
 		gif.remove()
 		correctDisplay.remove();
 		triviaGOT.checkAnswer(null);
-		insertContent();
+		checkEnd();
 	}, 5000);
-
-
 }
 var triviaQuestion;
 
@@ -194,16 +201,7 @@ $(document).ready(function(){
 		setTimeout(function(){
 			gif.remove()
 			correctDisplay.remove();
-			if (triviaGOT.remainingQuestions.length >= 1){
-				$("#answer1").css("display","block");
-				$("#answer2").css("display","block");
-				$("#answer3").css("display","block");
-				$("#answer4").css("display","block");
-				insertContent();
-				// Reset Timer
-			}else{
-				displayResults();
-			}
+			checkEnd();
 		}, 5000);
 
 	});

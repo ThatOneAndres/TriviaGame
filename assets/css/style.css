@@ -23,6 +23,9 @@ body{
 #instructions{
 	background-color: black;
 }
+#question{
+	background-color: green;
+}
 #timer{
 	background-color: black;
 }
