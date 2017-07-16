@@ -1,7 +1,8 @@
-function TriviaQuestion(question, arrayOfAnswers,correctAnswer){
+function TriviaQuestion(question, arrayOfAnswers,correctAnswer,webElement){
 	this.question = question;
 	this.arrayOfAnswers = arrayOfAnswers;
 	this.correctAnswer= correctAnswer;
+	this.webElement = webElement;
 }
 
 class TriviaGame{
@@ -47,11 +48,20 @@ class TriviaGame{
 	}
 }
 
-var question1 = new TriviaQuestion('Name the "other" Stark child: Robb, Brandon, Sansa, Arya, Jon Snow and ...?',["Rickon","Dickon","Theon","Eddard"], "Rickon");
-var question2 = new TriviaQuestion("What is the name of Jon Snow's Direwolf?",["Grey Wind","Graham","Ghost","Garhamel"], "Ghost");
-var question3 = new TriviaQuestion("Which one of these is not a Great House? House...",["Targaryen","Stark","Uzumaki","Forrester"], "Uzumaki");
-var question4 = new TriviaQuestion("Before departing to Braavos, Arya was given a coin and a phrase. What was the phrase?",["Dracarys","Valar Morghulis","Shekh Ma Shieraki Anni","Valar Dohaeris"], "Valar Morghulis");
-var question5 = new TriviaQuestion('Who said "I drink and I know things"?',["Tyrion","Cersei","Robert","Bronn"], "Tyrion");
+var question1 = new TriviaQuestion('Name the "other" Stark child: Robb, Brandon, Sansa, Arya, Jon Snow and ...?',["Rickon","Dickon","Theon","Eddard"], "Rickon",
+	'<iframe src="https://giphy.com/embed/MILN274JotMME" width="480" height="264" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/gotedit-rickon-stark-gotrickonstark-MILN274JotMME">via GIPHY</a></p>');
+
+var question2 = new TriviaQuestion("What is the name of Jon Snow's Direwolf?",["Grey Wind","Graham","Ghost","Garhamel"], "Ghost",
+	'<iframe src="https://giphy.com/embed/OW3XTmLPnEWmQ" width="480" height="327" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/game-of-thrones-ghost-jon-snow-OW3XTmLPnEWmQ">via GIPHY</a></p>');
+
+var question3 = new TriviaQuestion("Which one of these is not a Great House? House...",["Targaryen","Stark","Uzumaki","Forrester"], "Uzumaki",
+	'<img src="https://images.vexels.com/media/users/3/78080/raw/f02f5be3428b70b121a86d7c67662e1d-game-of-thrones-houses.jpg" style = "width: 500px">');
+
+var question4 = new TriviaQuestion("Before departing to Braavos, Arya was given a coin and a phrase. What was the phrase?",["Dracarys","Valar Morghulis","Shekh Ma Shieraki Anni","Valar Dohaeris"], "Valar Morghulis",
+	'<iframe src="https://giphy.com/embed/c1oP0AunRfP7a" width="480" height="269" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/game-of-thrones-spiderman-maisie-williams-c1oP0AunRfP7a">via GIPHY</a></p>');
+
+var question5 = new TriviaQuestion('Who said "I drink and I know things"?',["Tyrion","Cersei","Robert","Bronn"], "Tyrion",
+	'<iframe src="https://giphy.com/embed/8pScFa92iZOkE" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/i-know-8pScFa92iZOkE">via GIPHY</a></p>');
 
 var triviaGOT = new TriviaGame([question1,question2,question3,question4,question5]);
 
@@ -84,7 +94,7 @@ var timeUp = function(){
 	var correctDisplay = $("<div id = 'correct-display'>");
 	var gif = $("<div id = 'gif'>");
 	correctDisplay.html("The correct answer is " + triviaGOT.currentQuestion.correctAnswer);
-	gif.html("Insert GIF Here");
+	gif.html(triviaGOT.currentQuestion.webElement);
 	$(".content").append(correctDisplay);
 	$(".content").append(gif);
 	$("#answer1").css("display","none");
@@ -191,7 +201,7 @@ $(document).ready(function(){
 			$("#question").html("Oops! That was the wrong answer!");
 			correctDisplay.html("The correct answer is " + triviaGOT.currentQuestion.correctAnswer);
 		}
-		gif.html("Insert GIF Here");
+		gif.html(triviaGOT.currentQuestion.webElement);
 		$(".content").append(correctDisplay);
 		$(".content").append(gif);
 		$("#answer1").css("display","none");
