@@ -7,6 +7,10 @@ function TriviaQuestion(question, arrayOfAnswers,correctAnswer){
 class TriviaGame{
 	constructor(arrayOfQuestions){
 		this.arrayOfQuestions = arrayOfQuestions;
+		this.remainingQuestions = [];
+		for (var i = 0 ; i < this.arrayOfQuestions.length; i++){
+			this.remainingQuestions[i] = this.arrayOfQuestions[i];
+		}
 		this.correct = 0;
 		this.wrong = 0;
 		this.indexQuestion = null;
@@ -14,13 +18,13 @@ class TriviaGame{
 	}
 
 	get randomQuestion(){
-		this.indexQuestion = Math.floor(Math.random() * this.arrayOfQuestions.length);
-		this.currentQuestion = this.arrayOfQuestions[this.indexQuestion];
+		this.indexQuestion = Math.floor(Math.random() * this.remainingQuestions.length);
+		this.currentQuestion = this.remainingQuestions[this.indexQuestion];
 		return this.currentQuestion;
 	}
 
 	checkAnswer(studentAnswer){
-		this.arrayOfQuestions.splice(this.indexQuestion,1);
+		this.remainingQuestions.splice(this.indexQuestion,1);
 		if (studentAnswer === this.currentQuestion.correctAnswer){
 			this.correct++;
 			return true;
@@ -31,7 +35,7 @@ class TriviaGame{
 	}
 
 	get sizeOfQuestion(){
-		return this.arrayOfQuestions.length;
+		return this.remainingQuestions.length;
 	}
 }
 
@@ -144,8 +148,6 @@ $(document).ready(function(){
 		var playerAnswer = this.textContent;
 		clearTimeout(countDown);
 		clearInterval(displayTime);
-		console.log(playerAnswer);
-		console.log(triviaGOT.currentQuestion.correctAnswer);
 		var correctDisplay = $("<div id = 'correct-display'>");
 		var gif = $("<div id = 'gif'>");
 		if (triviaGOT.checkAnswer(playerAnswer)){
@@ -164,7 +166,7 @@ $(document).ready(function(){
 		$("#answer3").css("display","none");
 		$("#answer4").css("display","none");
 		setTimeout(function(){
-			if (triviaGOT.arrayOfQuestions.length > 1){
+			if (triviaGOT.remainingQuestions.length >= 1){
 				$("#answer1").css("display","block");
 				$("#answer2").css("display","block");
 				$("#answer3").css("display","block");
