@@ -23,8 +23,10 @@ class TriviaGame{
 		this.arrayOfQuestions.splice(this.indexQuestion,1);
 		if (studentAnswer === this.currentQuestion.correctAnswer){
 			this.correct++;
+			return true;
 		}else{
 			this.wrong++;
+			return false;
 		}
 	}
 
@@ -41,7 +43,7 @@ var question5 = new TriviaQuestion("E",["1","2","3","4"], "1");
 
 var triviaGOT = new TriviaGame([question1,question2,question3,question4,question5]);
 
-var timeAllowed = 20;
+var timeAllowed = 10;
 var timeLeft = timeAllowed;
 var countDown; // Will be used to have setTimeout with 30 seconds, will clear when moving to next question.
 var displayTime; // Will be used to have setInterval to Display time left
@@ -53,18 +55,37 @@ var updateTime = function(){
 
 var timeUp = function(){
 	clearInterval(displayTime);
-	timeLeft = timeAllowed;
-	$("#time").html(timeLeft);
-	countDown = setTimeout(timeUp, 1000*timeLeft);
-	displayTime = setInterval(updateTime, 1000);
-	triviaGOT.checkAnswer(null);
-	insertContent();
-	console.log("Times Ups!")
+	$("#question").html("Time ran out! Remember you only have "+ timeAllowed+ " seconds!");
+	var correctDisplay = $("<div id = 'correct-display'>");
+	var gif = $("<div id = 'gif'>");
+	correctDisplay.html("The correct answer is " + triviaGOT.currentQuestion.correctAnswer);
+	gif.html("Insert GIF Here");
+	$(".content").append(correctDisplay);
+	$(".content").append(gif);
+	$("#answer1").css("display","none");
+	$("#answer2").css("display","none");
+	$("#answer3").css("display","none");
+	$("#answer4").css("display","none");
+	setTimeout(function(){
+		$("#answer1").css("display","block");
+		$("#answer2").css("display","block");
+		$("#answer3").css("display","block");
+		$("#answer4").css("display","block");
+		gif.remove()
+		correctDisplay.remove();
+		triviaGOT.checkAnswer(null);
+		insertContent();
+	}, 5000);
+
 
 }
 var triviaQuestion;
 
 var insertContent = function(){
+		timeLeft = timeAllowed;
+		$("#time").html(timeLeft);
+		displayTime = setInterval(updateTime, 1000);
+		countDown = setTimeout(timeUp, 1000*timeLeft);
 		triviaQuestion = triviaGOT.randomQuestion;
 		$("#question").html(triviaQuestion.question);
 		$("#answer1").html(triviaQuestion.arrayOfAnswers[0]);
@@ -77,12 +98,7 @@ var insertContent = function(){
 
 var displayResults = function(){
 		$("#question").remove();
-		$("#answer1").remove();
-		$("#answer2").remove();
-		$("#answer3").remove();
-		$("#answer4").remove();
-		clearTimeout(countDown);
-		clearInterval(displayTime);
+		$("#answers").remove();
 		$("#timer").remove();
 		var resultHeader = $("<div class = 'result'>");
 		resultHeader.html("<b>Results</b>");
@@ -98,20 +114,24 @@ var displayResults = function(){
 
 $(document).ready(function(){
 
+	setInterval(function(){
+		var randomNum = Math.floor(Math.random()*5 + 1);
+		var backImage = "url('assets/images/GOT" + randomNum + ".jpg')";
+		$("body").css("background-image", backImage);
+	},1000*20)
+
 	$(".start-btn").click(function(){
 		$(".start-btn").remove();
 		$("#instructions").remove();
 		var timer = $("<div id = 'timer'>");
 		timer.html("Time Remaining: <span id='time'> "+ timeLeft + "</span> Seconds");
 		$(".content").append(timer);
-		countDown = setTimeout(timeUp, 1000*timeLeft);
-		displayTime = setInterval(updateTime, 1000);
 		var question = $("<div id = 'question'>");
 		$(".content").append(question);
-		var answer1 = $("<div class = 'answers' id='answer1'>");
-		var answer2 = $("<div class = 'answers' id='answer2'>");
-		var answer3 = $("<div class = 'answers' id='answer3'>");
-		var answer4 = $("<div class = 'answers' id='answer4'>");
+		var answer1 = $("<button class = 'btn btn-default answers' id='answer1'>");
+		var answer2 = $("<button class = 'btn btn-default answers' id='answer2'>");
+		var answer3 = $("<button class = 'btn btn-default answers' id='answer3'>");
+		var answer4 = $("<button class = 'btn btn-default answers' id='answer4'>");
 		$(".content").append(answer1);
 		$(".content").append(answer2);
 		$(".content").append(answer3);
@@ -122,19 +142,42 @@ $(document).ready(function(){
 
 	$(".content").delegate(".answers","click",function(){
 		var playerAnswer = this.textContent;
-		triviaGOT.checkAnswer(playerAnswer);
-		if (triviaGOT.arrayOfQuestions.length !== 1){
-			insertContent();
-			// Reset Timer
-			timeLeft = timeAllowed;
-			$("#time").html(timeLeft);
-			clearTimeout(countDown);
-			clearInterval(displayTime);
-			countDown = setTimeout(timeUp, 1000*timeLeft);
-			displayTime = setInterval(updateTime, 1000);
-		}else{
-			displayResults();
+		clearTimeout(countDown);
+		clearInterval(displayTime);
+		console.log(playerAnswer);
+		console.log(triviaGOT.currentQuestion.correctAnswer);
+		var correctDisplay = $("<div id = 'correct-display'>");
+		var gif = $("<div id = 'gif'>");
+		if (triviaGOT.checkAnswer(playerAnswer)){
+			$("#question").html("Awesome, Correct!");
+			correctDisplay.html("");
 		}
+		else{
+			$("#question").html("Oops! That was the wrong answer!");
+			correctDisplay.html("The correct answer is " + triviaGOT.currentQuestion.correctAnswer);
+		}
+		gif.html("Insert GIF Here");
+		$(".content").append(correctDisplay);
+		$(".content").append(gif);
+		$("#answer1").css("display","none");
+		$("#answer2").css("display","none");
+		$("#answer3").css("display","none");
+		$("#answer4").css("display","none");
+		setTimeout(function(){
+			if (triviaGOT.arrayOfQuestions.length > 1){
+				$("#answer1").css("display","block");
+				$("#answer2").css("display","block");
+				$("#answer3").css("display","block");
+				$("#answer4").css("display","block");
+				gif.remove()
+				correctDisplay.remove();
+				insertContent();
+				// Reset Timer
+			}else{
+				displayResults();
+			}
+		}, 5000);
+
 	});
 
 
