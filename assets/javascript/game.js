@@ -34,6 +34,14 @@ class TriviaGame{
 		}
 	}
 
+	resetGame(){
+		this.correct = 0;
+		this.wrong = 0;
+		for (var i = 0 ; i < this.arrayOfQuestions.length; i++){
+			this.remainingQuestions[i] = this.arrayOfQuestions[i];
+		}
+	}
+
 	get sizeOfQuestion(){
 		return this.remainingQuestions.length;
 	}
@@ -99,20 +107,38 @@ var insertContent = function(){
 
 }
 
+var resetGame = function(){
+	triviaGOT.resetGame();
+	$(".result").remove();
+	$(".ratio").remove();
+	$(".reset").remove();
+	$("#answer1").css("display","block");
+	$("#answer2").css("display","block");
+	$("#answer3").css("display","block");
+	$("#answer4").css("display","block");
+	insertContent();
+}
 
 var displayResults = function(){
-		$("#question").remove();
-		$("#answers").remove();
-		$("#timer").remove();
+		$("#question").css("display","none");
+		$("#timer").css("display","none");
 		var resultHeader = $("<div class = 'result'>");
 		resultHeader.html("<b>Results</b>");
 		$(".content").append(resultHeader);
 		var percent = triviaGOT.correct/(triviaGOT.correct+triviaGOT.wrong)*100;
 		var ratio = $("<div class = 'ratio'>");
+		var reset = $("<button class = 'btn btn-danger reset'>")
+		reset.html("Reset");
 		ratio.html("Correct: "+ triviaGOT.correct +
 			"<br>Wrong: " + triviaGOT.wrong +
 			"<br>Percent: " + percent+ "%");
 		$(".content").append(ratio);
+		$(".content").append(reset);
+		$(".reset").click(function(){
+			$("#question").css("display","block");
+			$("#timer").css("display","block");
+			resetGame();
+		});
 }
 
 
@@ -166,13 +192,13 @@ $(document).ready(function(){
 		$("#answer3").css("display","none");
 		$("#answer4").css("display","none");
 		setTimeout(function(){
+			gif.remove()
+			correctDisplay.remove();
 			if (triviaGOT.remainingQuestions.length >= 1){
 				$("#answer1").css("display","block");
 				$("#answer2").css("display","block");
 				$("#answer3").css("display","block");
 				$("#answer4").css("display","block");
-				gif.remove()
-				correctDisplay.remove();
 				insertContent();
 				// Reset Timer
 			}else{
@@ -181,6 +207,5 @@ $(document).ready(function(){
 		}, 5000);
 
 	});
-
 
 });
