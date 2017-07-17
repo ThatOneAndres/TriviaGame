@@ -36,3 +36,16 @@ body{
 .answers{
 	width: 100%;
 }
+.mute-btn{
+	position: absolute;
+	bottom: 3px;
+	top: auto;
+	font-size: 30px;
+}
+.unmute-btn{
+	position: absolute;
+	bottom: 3px;
+	top: auto;
+	font-size: 30px;
+	display: none;
+}

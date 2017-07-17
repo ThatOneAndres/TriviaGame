@@ -216,4 +216,17 @@ $(document).ready(function(){
 
 	});
 
+$(".mute-btn").on("click",function(){
+	$("#GoT-theme").prop("muted", true);
+	$(".mute-btn").css("display","none");
+	$(".unmute-btn").css("display","block");
+});
+
+$(".unmute-btn").on("click",function(){
+	$("#GoT-theme").prop("muted", false);
+	$(".unmute-btn").css("display","none");
+	$(".mute-btn").css("display","block");
+});
+
+
 });
