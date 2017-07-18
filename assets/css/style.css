@@ -11,9 +11,14 @@ body{
 	margin: 0;
 	font-size: 20px;
 }
+@font-face {
+	font-family: "GoT";
+	src: url("GameofThrones.ttf") format("truetype");
+	font-weight: bold;
+}
 #game-title{
-	font-size: 40px;
-	font-family: sans-serif;
+	font-size: 33px;
+	font-family: "GoT";
 	font-weight: bold;
 	margin-bottom: 75px;
 	color: red;
@@ -37,10 +42,12 @@ body{
 	background-color: black;
 	margin-bottom: 2px;
 	padding: 6px 12px;
+
 }
 .start-btn{
 	width: 160px;
 	margin-bottom: 75px;
+	font-family: "GoT";
 }
 .answers{
 	width: 100%;
