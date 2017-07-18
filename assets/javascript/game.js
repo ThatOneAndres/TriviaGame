@@ -63,9 +63,24 @@ var question4 = new TriviaQuestion("Before departing to Braavos, Arya was given 
 var question5 = new TriviaQuestion('Who said "I drink and I know things"?',["Tyrion","Cersei","Robert","Bronn"], "Tyrion",
 	'<iframe src="https://giphy.com/embed/8pScFa92iZOkE" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/i-know-8pScFa92iZOkE">via GIPHY</a></p>');
 
-var triviaGOT = new TriviaGame([question1,question2,question3,question4,question5]);
+var question6 = new TriviaQuestion('Who has Margaery Tyrell NOT been bethrothed to?', ["Tommen Baratheon", "Renly Baratheon","Stannis Baratheon", "Joffrey Baratheon"],"Stannis Baratheon",
+	'<iframe src="https://giphy.com/embed/qf1S370w70inS" width="480" height="392" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/game-of-thrones-gif-margaery-tyrell-qf1S370w70inS">via GIPHY</a></p>');
 
-var timeAllowed = 10;
+var question7 = new	TriviaQuestion("Which of Daenerys Targaryen's three dragons are the largest?", ["Rhaegal","Drogon","Viserion","Balerion"],"Drogon",
+	'<iframe src="https://giphy.com/embed/VO4fmLnLYYz0Q" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/game-of-thrones-drogon-VO4fmLnLYYz0Q">via GIPHY</a></p>');
+
+var question8 = new TriviaQuestion("What is NOT part of the Night's Watch vows?", ["Win No Glory", "Take No Wife", "Kill No Innocent", "Father No Children"],"Kill No Innocent",
+	"<img src = 'http://www.thinkgeek.com/images/products/additional/large/1aa8_nights_watch.jpg' style = 'width: 500px'>");
+
+var question9 = new TriviaQuestion("Who is NOT on Arya Stark's list?", ["Varys", "Ilyn Pain", "Cersei Lannister", "Joffrey Baratheon"], "Varys",
+	'<iframe src="https://giphy.com/embed/sDkV3cGgWKtR6" width="480" height="244" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/arya-stark-sDkV3cGgWKtR6">via GIPHY</a></p>');
+
+var question10 = new TriviaQuestion("What does Khal Drogo call ships?", ["Leaky Tents","Moving Cities", "Wooden Horses", "Evil Magic"], "Wooden Horses",
+	'<iframe src="https://giphy.com/embed/G2tvzsfhIfymY" width="480" height="360" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/khal-drogo-G2tvzsfhIfymY">via GIPHY</a></p>');
+
+var triviaGOT = new TriviaGame([question1,question2,question3,question4,question5,question6,question7,question8,question9,question10]);
+
+var timeAllowed = 30;
 var timeLeft = timeAllowed;
 var countDown; // Will be used to have setTimeout with 30 seconds, will clear when moving to next question.
 var displayTime; // Will be used to have setInterval to Display time left
@@ -76,15 +91,15 @@ var updateTime = function(){
 }
 
 var checkEnd =function(){
-		if (triviaGOT.remainingQuestions.length >= 1){
-			$("#answer1").css("display","block");
-			$("#answer2").css("display","block");
-			$("#answer3").css("display","block");
-			$("#answer4").css("display","block");
-			insertContent();
-		}else{
-			displayResults();
-		}
+	if (triviaGOT.remainingQuestions.length >= 1){
+		$("#answer1").css("display","block");
+		$("#answer2").css("display","block");
+		$("#answer3").css("display","block");
+		$("#answer4").css("display","block");
+		insertContent();
+	}else{
+		displayResults();
+	}
 }
 
 
@@ -106,21 +121,22 @@ var timeUp = function(){
 		correctDisplay.remove();
 		triviaGOT.checkAnswer(null);
 		checkEnd();
-	}, 5000);
+	}, 1000*5);
 }
 var triviaQuestion;
 
 var insertContent = function(){
-		timeLeft = timeAllowed;
-		$("#time").html(timeLeft);
-		displayTime = setInterval(updateTime, 1000);
-		countDown = setTimeout(timeUp, 1000*timeLeft);
-		triviaQuestion = triviaGOT.randomQuestion;
-		$("#question").html(triviaQuestion.question);
-		$("#answer1").html(triviaQuestion.arrayOfAnswers[0]);
-		$("#answer2").html(triviaQuestion.arrayOfAnswers[1]);
-		$("#answer3").html(triviaQuestion.arrayOfAnswers[2]);
-		$("#answer4").html(triviaQuestion.arrayOfAnswers[3]);
+	timeLeft = timeAllowed;
+	$("#time").html(timeLeft);
+	displayTime = setInterval(updateTime, 1000);
+	countDown = setTimeout(timeUp, 1000*timeLeft);
+	triviaQuestion = triviaGOT.randomQuestion;
+	$("#question").html(triviaQuestion.question);
+	$("#question").css("background-color","blue");
+	$("#answer1").html(triviaQuestion.arrayOfAnswers[0]);
+	$("#answer2").html(triviaQuestion.arrayOfAnswers[1]);
+	$("#answer3").html(triviaQuestion.arrayOfAnswers[2]);
+	$("#answer4").html(triviaQuestion.arrayOfAnswers[3]);
 
 }
 
@@ -137,25 +153,26 @@ var resetGame = function(){
 }
 
 var displayResults = function(){
-		$("#question").css("display","none");
-		$("#timer").css("display","none");
-		var resultHeader = $("<div class = 'result'>");
-		resultHeader.html("<b>Results</b>");
-		$(".content").append(resultHeader);
-		var percent = triviaGOT.correct/(triviaGOT.correct+triviaGOT.wrong)*100;
-		var ratio = $("<div class = 'ratio'>");
-		var reset = $("<button class = 'btn btn-danger reset'>")
-		reset.html("Reset");
-		ratio.html("Correct: "+ triviaGOT.correct +
-			"<br>Wrong: " + triviaGOT.wrong +
-			"<br>Percent: " + percent+ "%");
-		$(".content").append(ratio);
-		$(".content").append(reset);
-		$(".reset").click(function(){
-			$("#question").css("display","block");
-			$("#timer").css("display","block");
-			resetGame();
-		});
+	$("#question").css("display","none");
+	$("#timer").css("display","none");
+	var resultHeader = $("<div class = 'result'>");
+	resultHeader.html("<b>Results</b>");
+	$(".content").append(resultHeader);
+	var percent = triviaGOT.correct/(triviaGOT.correct+triviaGOT.wrong)*100;
+	var ratio = $("<div class = 'ratio'>");
+	var reset = $("<button class = 'btn btn-danger reset'>")
+	reset.html("Reset");
+	ratio.html("Correct: "+ triviaGOT.correct +
+		"<br>Wrong: " + triviaGOT.wrong +
+		"<br>Percent: " + percent+ "%");
+	$(".content").append(ratio);
+	$(".content").append(reset);
+	$(".reset").click(function(){
+		$("#question").css("display","block");
+		$("#question").css("background-color","blue");
+		$("#timer").css("display","block");
+		resetGame();
+	});
 }
 
 
@@ -195,10 +212,12 @@ $(document).ready(function(){
 		var gif = $("<div id = 'gif'>");
 		if (triviaGOT.checkAnswer(playerAnswer)){
 			$("#question").html("Awesome, Correct!");
+			$("#question").css("background-color","green");
 			correctDisplay.html("");
 		}
 		else{
 			$("#question").html("Oops! That was the wrong answer!");
+			$("#question").css("background-color","red");
 			correctDisplay.html("The correct answer is " + triviaGOT.currentQuestion.correctAnswer);
 		}
 		gif.html(triviaGOT.currentQuestion.webElement);
@@ -216,17 +235,17 @@ $(document).ready(function(){
 
 	});
 
-$(".mute-btn").on("click",function(){
-	$("#GoT-theme").prop("muted", true);
-	$(".mute-btn").css("display","none");
-	$(".unmute-btn").css("display","block");
-});
+	$(".mute-btn").on("click",function(){
+		$("#GoT-theme").prop("muted", true);
+		$(".mute-btn").css("display","none");
+		$(".unmute-btn").css("display","block");
+	});
 
-$(".unmute-btn").on("click",function(){
-	$("#GoT-theme").prop("muted", false);
-	$(".unmute-btn").css("display","none");
-	$(".mute-btn").css("display","block");
-});
+	$(".unmute-btn").on("click",function(){
+		$("#GoT-theme").prop("muted", false);
+		$(".unmute-btn").css("display","none");
+		$(".mute-btn").css("display","block");
+	});
 
 
 });
