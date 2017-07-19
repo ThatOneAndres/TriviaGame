@@ -80,7 +80,7 @@ var question10 = new TriviaQuestion("What does Khal Drogo call ships?", ["Leaky 
 
 var triviaGOT = new TriviaGame([question1,question2,question3,question4,question5,question6,question7,question8,question9,question10]);
 
-var timeAllowed = 30;
+var timeAllowed = 20;
 var timeLeft = timeAllowed;
 var countDown; // Will be used to have setTimeout with 30 seconds, will clear when moving to next question.
 var displayTime; // Will be used to have setInterval to Display time left
@@ -174,8 +174,6 @@ var displayResults = function(){
 		resetGame();
 	});
 }
-
-
 $(document).ready(function(){
 
 	setInterval(function(){
@@ -246,6 +244,4 @@ $(document).ready(function(){
 		$(".unmute-btn").css("display","none");
 		$(".mute-btn").css("display","block");
 	});
-
-
 });
