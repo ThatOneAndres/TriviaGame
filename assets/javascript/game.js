@@ -112,10 +112,7 @@ var timeUp = function(){
 	gif.html(triviaGOT.currentQuestion.webElement);
 	$(".content").append(correctDisplay);
 	$(".content").append(gif);
-	$("#answer1").css("display","none");
-	$("#answer2").css("display","none");
-	$("#answer3").css("display","none");
-	$("#answer4").css("display","none");
+	$(".answers").css("display","none");
 	setTimeout(function(){
 		gif.remove()
 		correctDisplay.remove();
@@ -145,10 +142,7 @@ var resetGame = function(){
 	$(".result").remove();
 	$(".ratio").remove();
 	$(".reset").remove();
-	$("#answer1").css("display","block");
-	$("#answer2").css("display","block");
-	$("#answer3").css("display","block");
-	$("#answer4").css("display","block");
+	$(".answers").css("display","block");
 	insertContent();
 }
 
@@ -161,7 +155,7 @@ var displayResults = function(){
 	var percent = triviaGOT.correct/(triviaGOT.correct+triviaGOT.wrong)*100;
 	var ratio = $("<div class = 'ratio'>");
 	var reset = $("<button class = 'btn btn-danger reset'>")
-	reset.html("Reset");
+	reset.html("Play Again");
 	ratio.html("Correct: "+ triviaGOT.correct +
 		"<br>Wrong: " + triviaGOT.wrong +
 		"<br>Percent: " + percent+ "%");
@@ -221,10 +215,7 @@ $(document).ready(function(){
 		gif.html(triviaGOT.currentQuestion.webElement);
 		$(".content").append(correctDisplay);
 		$(".content").append(gif);
-		$("#answer1").css("display","none");
-		$("#answer2").css("display","none");
-		$("#answer3").css("display","none");
-		$("#answer4").css("display","none");
+		$(".answers").css("display","none");
 		setTimeout(function(){
 			gif.remove()
 			correctDisplay.remove();
